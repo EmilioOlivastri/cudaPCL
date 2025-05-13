@@ -1,2 +1,8 @@
-./*/build/
-./*/data/*.pcd
+./**/build/
+cuCluster/data/*.pcd
+cuFilter/data/*.pcd
+cuICP/data/*.pcd
+cuNDT/data/*.pcd
+cuOctree/data/*.pcd
+cuSegmentation/data/*.pcd
+
