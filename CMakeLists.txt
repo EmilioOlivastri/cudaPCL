@@ -43,6 +43,8 @@ set(BUILD_EXAMPLE OFF CACHE BOOL "Activate the example building")
 
 file(GLOB CUDAPCL_LIBRARIES "lib/*.so")
 file(GLOB CUDAPCL_INCLUDE_DIRS "include")
+set(CUDAPCL_LIBRARIES ${CUDAPCL_LIBRARIES} PARENT_SCOPE)
+set(CUDAPCL_INCLUDE_DIRS ${CUDAPCL_INCLUDE_DIRS} PARENT_SCOPE) 
 
 include_directories(
   ${EIGEN3_INCLUDE_DIRS}
@@ -51,10 +53,6 @@ include_directories(
   ${CUDA_INCLUDE_DIRS}
   ${CUDAPCL_INCLUDE_DIRS}
 )
-
-message(STATUS "Libraries: ${CUDAPCL_LIBRARIES}")
-message(STATUS "Include dirs: ${CUDA_INCLUDE_DIRS}")
-message(STATUS "BUILD_EXAMPLE: ${BUILD_EXAMPLE}")
 
 if(BUILD_EXAMPLE)
    add_executable(cluster_cuda examples/cluster_main.cpp)
