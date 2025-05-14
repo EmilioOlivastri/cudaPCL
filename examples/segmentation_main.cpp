@@ -28,7 +28,7 @@
 #include <pcl/visualization/cloud_viewer.h>
 
 #include "cuda_runtime.h"
-#include "cudaSegmentation.h"
+#include "cudaPCL/cudaSegmentation.h"
 
 void Getinfo(void)
 {

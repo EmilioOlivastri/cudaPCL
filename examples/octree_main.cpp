@@ -35,7 +35,7 @@
 #include <vector>
 
 #include "cuda_runtime.h"
-#include "cudaOctree.h"
+#include "cudaPCL/cudaOctree.h"
 
 
 void Getinfo(void)

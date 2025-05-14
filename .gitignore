@@ -5,4 +5,4 @@ cuICP/data/*.pcd
 cuNDT/data/*.pcd
 cuOctree/data/*.pcd
 cuSegmentation/data/*.pcd
-
+build/

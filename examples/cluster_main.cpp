@@ -26,7 +26,7 @@
 #include <pcl/segmentation/extract_clusters.h>
 
 #include "cuda_runtime.h"
-#include "cudaCluster.h"
+#include "cudaPCL/cudaCluster.h"
 
 void Getinfo(void)
 {

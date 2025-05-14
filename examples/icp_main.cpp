@@ -28,7 +28,7 @@
 #include <pcl/visualization/cloud_viewer.h>
 
 #include "cuda_runtime.h"
-#include "cudaICP.h"
+#include "cudaPCL/cudaICP.h"
 
 struct Iter_para //Interation paraments
 {

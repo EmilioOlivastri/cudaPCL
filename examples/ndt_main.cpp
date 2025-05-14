@@ -27,7 +27,7 @@
 #include <pcl/registration/ndt.h>
 
 #include "cuda_runtime.h"
-#include "cudaNDT.h"
+#include "cudaPCL/cudaNDT.h"
 
 void Getinfo(void)
 {

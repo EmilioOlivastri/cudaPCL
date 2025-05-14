@@ -29,7 +29,7 @@
 #include <pcl/visualization/cloud_viewer.h>
 
 #include "cuda_runtime.h"
-#include "cudaFilter.h"
+#include "cudaPCL/cudaFilter.h"
 
 void Getinfo(void)
 {

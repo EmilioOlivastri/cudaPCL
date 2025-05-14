@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 cmake_policy(SET CMP0146 OLD)
 cmake_policy(SET CMP0167 OLD)
 
-project(demo LANGUAGES CXX CUDA)
+project(cudaPCL LANGUAGES CXX CUDA)
 
 # ----------------------------------------------------------------------------
 # compiler settings
@@ -24,11 +24,8 @@ set(CMAKE_EXE_LINKER_FLAGS
     "${CMAKE_EXE_LINKER_FLAGS} -Wl,--allow-shlib-undefined -pthread"
 )
 
-# ----------------------------------------------------------------------------
-# CUDA architectures (GENCODE_FLAGS → CMAKE_CUDA_ARCHITECTURES)
-# ----------------------------------------------------------------------------
-set(SM_ARCHS 30 35 37 50 52 53 60 61 62 70 72 75 87)
 # Tell CMake to compile for these compute capabilities
+set(SM_ARCHS 30 35 37 50 52 53 60 61 62 70 72 75 87)
 set(CMAKE_CUDA_ARCHITECTURES ${SM_ARCHS})
 
 # ----------------------------------------------------------------------------
@@ -42,30 +39,45 @@ find_package(Boost REQUIRED COMPONENTS system)
 
 set(VTK_INCLUDE_DIR "")
 list(GET VTK_INCLUDE_DIRS 0 VTK_INCLUDE_DIR)
+set(BUILD_EXAMPLE OFF CACHE BOOL "Activate the example building")
+
+file(GLOB CUDAPCL_LIBRARIES "lib/*.so")
+file(GLOB CUDAPCL_INCLUDE_DIRS "include")
 
 include_directories(
   ${EIGEN3_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
   ${VTK_INCLUDE_DIR}
   ${CUDA_INCLUDE_DIRS}
-  include
+  ${CUDAPCL_INCLUDE_DIRS}
 )
 
-link_directories(lib)
+message(STATUS "Libraries: ${CUDAPCL_LIBRARIES}")
+message(STATUS "Include dirs: ${CUDA_INCLUDE_DIRS}")
+message(STATUS "BUILD_EXAMPLE: ${BUILD_EXAMPLE}")
 
-add_executable(${PROJECT_NAME} 
-src/main.cpp
-)
-
-target_link_libraries(${PROJECT_NAME}
-    ${CUDA_LIBRARIES}
-    ${PCL_LIBRARIES}
-    ${VTK_LIBRARIES}
-    libcudaoctree.so
-)
+if(BUILD_EXAMPLE)
+   add_executable(cluster_cuda examples/cluster_main.cpp)
+   target_link_libraries(cluster_cuda ${CUDA_LIBRARIES} ${PCL_LIBRARIES} ${VTK_LIBRARIES} ${CUDAPCL_LIBRARIES})
+   
+   add_executable(filter_cuda examples/filter_main.cpp)
+   target_link_libraries(filter_cuda ${CUDA_LIBRARIES} ${PCL_LIBRARIES} ${VTK_LIBRARIES} ${CUDAPCL_LIBRARIES})
+   
+   add_executable(icp_cuda examples/icp_main.cpp)
+   target_link_libraries(icp_cuda ${CUDA_LIBRARIES} ${PCL_LIBRARIES} ${VTK_LIBRARIES} ${CUDAPCL_LIBRARIES})
+   
+   add_executable(ndt_cuda examples/ndt_main.cpp)
+   target_link_libraries(ndt_cuda ${CUDA_LIBRARIES} ${PCL_LIBRARIES} ${VTK_LIBRARIES} ${CUDAPCL_LIBRARIES})
+   
+   add_executable(octree_cuda examples/octree_main.cpp)
+   target_link_libraries(octree_cuda ${CUDA_LIBRARIES} ${PCL_LIBRARIES} ${VTK_LIBRARIES} ${CUDAPCL_LIBRARIES})
+   
+   add_executable(segmentation_cuda examples/segmentation_main.cpp)
+   target_link_libraries(segmentation_cuda ${CUDA_LIBRARIES} ${PCL_LIBRARIES} ${VTK_LIBRARIES} ${CUDAPCL_LIBRARIES})
+endif()
 
 # ----------------------------------------------------------------------------
 # finish
 # ----------------------------------------------------------------------------
-message(STATUS "Configured demo with CUDA archs: ${CMAKE_CUDA_ARCHITECTURES}")
+message(STATUS "Configured cudaPCL with CUDA archs: ${CMAKE_CUDA_ARCHITECTURES}")
 
