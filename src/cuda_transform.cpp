@@ -2,19 +2,19 @@
 
 
 // Forward‐declare the device kernel
-extern __global__ void transformPointCloudKernel(float* output, const float* source,
+extern __global__ void transformPointCloudKernel(float* source,
                                                  const float*  transformationMatrix,
-                                                 unsigned int* n_points);
+                                                 unsigned int n_points);
 
 
-void launchTransformPointCloud(float* output, unsigned int* n_points, const float* source,
+void launchTransformPointCloud(unsigned int n_points, float* source,
                                const float* transformationMatrix, cudaStream_t stream) 
 {
-    const int threadsPerBlock = 256;
-    const int blocks = (*n_points + threadsPerBlock - 1) / threadsPerBlock;
+    const int threadsPerBlock = 512;
+    const int blocks = (n_points + threadsPerBlock - 1) / threadsPerBlock;
 
     transformPointCloudKernel<<< blocks, threadsPerBlock, 0, stream >>>(
-        output, source,
+        source,
         transformationMatrix,
         n_points);
     

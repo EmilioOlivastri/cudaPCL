@@ -37,6 +37,6 @@
     }                                                             \
 }
 
-void launchTransformPointCloud(float* output, unsigned int* n_points, const float* source,
+void launchTransformPointCloud(unsigned int n_points, float* source,
                                const float* transformationMatrix, cudaStream_t stream);
 
