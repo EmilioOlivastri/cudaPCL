@@ -25,7 +25,8 @@ set(CMAKE_EXE_LINKER_FLAGS
 )
 
 # Tell CMake to compile for these compute capabilities
-set(SM_ARCHS 30 35 37 50 52 53 60 61 62 70 72 75 87)
+#set(SM_ARCHS 35 37 50 52 53 60 61 62 70 72 75 87)
+set(SM_ARCHS 75 87)
 set(CMAKE_CUDA_ARCHITECTURES ${SM_ARCHS})
 
 # ----------------------------------------------------------------------------
@@ -41,8 +42,35 @@ set(VTK_INCLUDE_DIR "")
 list(GET VTK_INCLUDE_DIRS 0 VTK_INCLUDE_DIR)
 set(BUILD_EXAMPLE OFF CACHE BOOL "Activate the example building")
 
+file(GLOB_RECURSE CUDAPCL_TF_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cu)
+
+set_source_files_properties(
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/cuda_transform.cpp
+  PROPERTIES LANGUAGE CUDA
+)
+
+add_library(CUDAPCL_TF_LIB ${CUDAPCL_TF_SOURCES})
+
+set_target_properties(CUDAPCL_TF_LIB PROPERTIES
+    CUDA_SEPARABLE_COMPILATION ON
+    POSITION_INDEPENDENT_CODE ON
+)
+
+target_include_directories(CUDAPCL_TF_LIB
+    PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+target_link_libraries(CUDAPCL_TF_LIB PUBLIC
+    ${CUDA_LIBRARIES}
+    Boost::system
+)
+
 file(GLOB CUDAPCL_LIBRARIES "lib/*.so")
 file(GLOB CUDAPCL_INCLUDE_DIRS "include")
+list(APPEND CUDAPCL_LIBRARIES CUDAPCL_TF_LIB) 
 set(CUDAPCL_LIBRARIES ${CUDAPCL_LIBRARIES} PARENT_SCOPE)
 set(CUDAPCL_INCLUDE_DIRS ${CUDAPCL_INCLUDE_DIRS} PARENT_SCOPE) 
 
