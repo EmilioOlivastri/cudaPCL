@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
-cmake_policy(SET CMP0146 OLD)
-cmake_policy(SET CMP0167 OLD)
+cmake_policy(SET CMP0074 OLD)
 
 project(cudaPCL LANGUAGES CXX CUDA)
 
@@ -25,8 +24,7 @@ set(CMAKE_EXE_LINKER_FLAGS
 )
 
 # Tell CMake to compile for these compute capabilities
-#set(SM_ARCHS 35 37 50 52 53 60 61 62 70 72 75 87)
-set(SM_ARCHS 75 87)
+set(SM_ARCHS 30 35 37 50 52 53 60 61 62 70 72 75 87)
 set(CMAKE_CUDA_ARCHITECTURES ${SM_ARCHS})
 
 # ----------------------------------------------------------------------------
@@ -68,9 +66,10 @@ target_link_libraries(CUDAPCL_TF_LIB PUBLIC
     Boost::system
 )
 
+
 file(GLOB CUDAPCL_LIBRARIES "lib/*.so")
 file(GLOB CUDAPCL_INCLUDE_DIRS "include")
-list(APPEND CUDAPCL_LIBRARIES CUDAPCL_TF_LIB) 
+list(APPEND CUDAPCL_LIBRARIES CUDAPCL_TF_LIB)
 set(CUDAPCL_LIBRARIES ${CUDAPCL_LIBRARIES} PARENT_SCOPE)
 set(CUDAPCL_INCLUDE_DIRS ${CUDAPCL_INCLUDE_DIRS} PARENT_SCOPE) 
 
